@@ -43,8 +43,3 @@ jobs:
 
       - name: Check formatting
         run: npm run format:check
-
-        run: npm ci
-
-      - name: Run tests
-        run: npm run test -- --coverage

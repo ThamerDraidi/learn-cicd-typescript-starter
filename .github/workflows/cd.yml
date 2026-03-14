@@ -9,8 +9,13 @@ permissions:
   id-token: write   # Workload Identity Federation
 
 jobs:
-  Deploy:
+  deploy:
+    name: Deploy
     runs-on: ubuntu-latest
+
+    # إضافة متغير البيئة DATABASE_URL
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
       - name: Checkout code
@@ -26,6 +31,10 @@ jobs:
 
       - name: Build app
         run: npm run build
+
+      # تشغيل الميجرشنز بعد بناء الصورة وقبل النشر
+      - name: Run DB migrations
+        run: npm run db:migrate
 
       # تسجيل الدخول إلى GCP باستخدام Workload Identity Federation
       - id: 'auth-gcp'
